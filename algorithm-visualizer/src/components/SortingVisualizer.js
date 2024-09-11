@@ -8,10 +8,11 @@ const SortingVisualizer = () => {
   const [sortedArray, setSortedArray] = useState([]);
   const [isSorting, setIsSorting] = useState(false);
 
-  // Generates new random array
+  const MAX_VALUE = 500; // Set the maximum value for scaling
+
+  // Generates new random array with values between 5 and MAX_VALUE
   const generateArray = (size = 50) => {
-    const newArr = Array.from({ length: size }, () => Math.floor(Math.random() * 500));
-    console.log('Generated array:', newArr);
+    const newArr = Array.from({ length: size }, () => Math.floor(Math.random() * (MAX_VALUE - 5)) + 5);
     setArray([...newArr]);
     setUnsortedArray([...newArr]); // Save the unsorted array
     setSortedArray([]); // Clear the sorted array
@@ -52,7 +53,9 @@ const SortingVisualizer = () => {
           arrayBars[j].style.backgroundColor = 'red';
         } else if (type === 'swap') {
           const tempHeight = arrayBars[i].style.height;
-          arrayBars[i].style.height = arrayBars[j].style.height;
+          const swapHeight = arrayBars[j].style.height;
+
+          arrayBars[i].style.height = swapHeight;
           arrayBars[j].style.height = tempHeight;
         }
         setTimeout(() => {
@@ -69,20 +72,40 @@ const SortingVisualizer = () => {
     }, animations.length * 50);
   };
 
+  // Generate Y-axis values dynamically based on the max height (MAX_VALUE)
+  const yAxisLabels = () => {
+    const interval = Math.ceil(MAX_VALUE / 10); // Divide the range into 10 intervals
+    const labels = [];
+    for (let i = MAX_VALUE; i >= 0; i -= interval) {
+      labels.push(i);
+    }
+    return labels;
+  };
+
   return (
-    <div>
+    <div className="visualizer-container">
+      {/* Y-Axis Labels */}
+      <div className="y-axis">
+        {yAxisLabels().map((label, idx) => (
+          <div key={idx} className="y-axis-label">{label}</div>
+        ))}
+      </div>
+
+      {/* Array Container */}
       <div className="array-container">
         {array.length > 0 ? (
           array.map((value, idx) => (
             <motion.div
               key={idx}
               className="array-bar"
-              style={{ height: `${value}px` }}
+              style={{ height: `${(value / MAX_VALUE) * 100}%` }} // Normalize height based on MAX_VALUE
               initial={{ opacity: 0.8 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
-              title={`Value: ${value}`} // Show value on hover
-            ></motion.div>
+            >
+              {/* Show value on hover */}
+              <span className="bar-value">{value}</span>
+            </motion.div>
           ))
         ) : (
           <p>No array to display</p>
@@ -100,8 +123,10 @@ const SortingVisualizer = () => {
         </div>
       </div>
 
-      <button onClick={() => generateArray()} disabled={isSorting}>Generate New Array</button>
-      <button onClick={bubbleSort} disabled={isSorting}>Bubble Sort</button>
+      <div className="button-container">
+        <button onClick={() => generateArray()} disabled={isSorting}>Generate New Array</button>
+        <button onClick={bubbleSort} disabled={isSorting}>Bubble Sort</button>
+      </div>
     </div>
   );
 };

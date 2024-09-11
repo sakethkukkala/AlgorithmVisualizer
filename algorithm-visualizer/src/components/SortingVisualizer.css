@@ -1,29 +1,72 @@
+.visualizer-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%; /* Use full container height */
+  padding-right: 10px;
+  font-size: 12px;
+}
+
+.y-axis-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 40px; /* Equal spacing */
+}
+
 .array-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    height: 400px;
-    width: 100%;
-    border: 1px solid #ddd;
-    background-color: #f4f4f4;
-  }
-  
-  .array-bar {
-    width: 10px;
-    margin: 0 1px;
-    background-color: lightblue;
-    display: inline-block;
-  }
-  
-  .info-box {
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    background-color: #fafafa;
-  }
-  
-  button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 400px; /* Fixed height for the chart */
+  width: 80%;
+  border: 1px solid #ddd;
+  background-color: #f4f4f4;
+  position: relative;
+}
+
+.array-bar {
+  width: 10px;
+  margin: 0 1px;
+  background-color: lightblue;
+  display: inline-block;
+  position: relative;
+}
+
+.bar-value {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: black;
+  display: none;
+}
+
+.array-bar:hover .bar-value {
+  display: block;
+}
+
+.info-box {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: #fafafa;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.button-container {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
